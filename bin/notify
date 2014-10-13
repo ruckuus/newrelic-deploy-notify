@@ -2,5 +2,9 @@
 require "rubygems"
 require "thor"
 require File.join(File.expand_path(File.dirname(__FILE__)), '../lib/newrelic-deploy-notify')
-
-Notify.start(ARGV)
+ret = Notify.start(ARGV) 
+if ret > 0
+  puts "Something went wrong"
+else
+  puts "Notification sent."
+end
