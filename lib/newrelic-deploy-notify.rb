@@ -6,7 +6,7 @@ class Notify < Thor
 
   attr_reader :host, :description, :revision, :changelog, :user, :api_key
 
-  desc "deployment APPNAME", "Notify deployment to NewRelic."
+  desc "deployment APPNAME [CONFIG FILE]", "Notify deployment to NewRelic."
   option :config, :desc => "Config file to be used, this is the place to put your newrelic key"
   option :host, :desc => "Deployment host."
   option :description, :desc => "Deployment description."
@@ -16,7 +16,7 @@ class Notify < Thor
 
   def deployment(appname, config='../newrelic-config.yml')
     if options[:config].nil?
-      config_file = config
+      config_file = File.dirname(__FILE__) + '/' + config
     else
       config_file = options[:config]
     end
@@ -29,7 +29,7 @@ class Notify < Thor
     @changelog = options[:changelog]
     @user = options[:user]
     @api_key = configs['newrelic_api_key']
-    self.post_request
+    return self.post_request
   end
 
   no_commands do
@@ -52,9 +52,9 @@ class Notify < Thor
       )
 
       if response.code == 201
-        puts 'Looks fine.'
+        return 0
       else
-        puts 'You may need to check NewRelic, we got this: ' + response.code.to_s
+        return response.code
       end
     end
   end
