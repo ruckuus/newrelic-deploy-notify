@@ -4,8 +4,6 @@ require 'rest_client'
 
 class Notify < Thor
 
-  attr_reader :host, :description, :revision, :changelog, :user, :api_key
-
   desc "deployment APPNAME [CONFIG FILE]", "Notify deployment to NewRelic."
   option :config, :desc => "Config file to be used, this is the place to put your newrelic key"
   option :host, :desc => "Deployment host."
